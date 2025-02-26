@@ -1,0 +1,47 @@
+$*************************HEADING************************
+$
+PROJ 'NIUE' '50m'
+$
+$
+$********************MODEL INPUT*************************
+$
+MODE NONSTAT
+COORDINATES SPHERICAL CCM
+SET level=0 NAUTICAL
+SET DEPMIN 0.5
+$
+CGRID UNSTRUCTURED CIRCLE 36 0.00345 1. 42
+READ UNSTRUCTURED
+$
+$
+INPgrid WIND REG -171 -20 0 6 8 0.25 0.25 NONSTAT %%dateinis%% 1 HR %%dateends%%
+READINP  WIND 1 SERIES 'SERIES_WIND.dat' 3  FREE
+$
+BOUN SIDE 1 CCW VAR  FILE 0.18782 'sp_001' 1, &
+0.68782 'sp_002' 1, &
+1.1878 'sp_003' 1, &
+1.6878 'sp_004' 1, &
+2.1878 'sp_005' 1, &
+2.6878 'sp_006' 1, &
+3.1878 'sp_007' 1, &
+3.6878 'sp_008' 1, &
+4.1878 'sp_009' 1, &
+4.6878 'sp_010' 1
+$
+TRI
+QUAD
+GEN3 ST6 6.5E-6 8.5E-5 4.0 4.0 UP HWANG VECTAU U10PROXY 35.0 AGROW
+SSWELL ARDHUIN 1.2
+FRIC JON CON
+BREA CON 1.0 0.73
+PROP BSBT
+NUM STOPC 0.005 0.01 0.005 99.5 NONSTAT 20 0.1
+$
+$*************************************************************
+$
+BLOCK 'COMPGRID' NOHEAD %%output_file%% LAY 3 XP YP HS HSWELL TM01 TM02 RTP DIR PDIR  FSPR  DSPR TRANSP WLEN PTHSIGN PTRTP PTDIR PTDSPR OUTPUT  %%dateinir%% 1 HR
+$
+TEST 1,0
+COMPUTE NONSTAT %%dateinis%% 1800 SEC %%dateends%%
+STOP
+$

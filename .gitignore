@@ -1,0 +1,10 @@
+.env
+env/
+operational_v1/tmp/
+operational_v1/runs/
+operational_v1/extras/niue/gis/
+operational_v1/extras/niue/swan/XX/
+operational_v1/extras/niue/swan/Test_run_01_find_first_pt_in_bry/
+operational_v1/extras/rarotonga/
+operational_v1/extras/TPXO9/
+operational_v1/extras/TPXO10v2/
