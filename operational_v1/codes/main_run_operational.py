@@ -78,27 +78,42 @@ def delete_nmonthsbefore(now,nmonths):
 # Suppress only deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-#- Find the llatest available run in nomads.ncep.noaa.gov
+
+#- Find the latest available run in nomads.ncep.noaa.gov
 now = dt.datetime.utcnow()
 url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
 runs = list_available_runs(url)
-
-if not runs:
-    now = dt.datetime.utcnow()
-    now = now - dt.timedelta(days=1) 
+if len(runs)==0:
+    now = dt.datetime.utcnow()-timedelta(1)
     url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
     runs = list_available_runs(url)
+
+#- Define the run to be used
+runs=sorted(runs)
+now = now.replace(hour=runs[-1],minute=0,second=0,microsecond=0)
+
+#- Find the llatest available run in nomads.ncep.noaa.gov
+# now = dt.datetime.utcnow()
+# url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
+# runs = list_available_runs(url)
+
+# if not runs:
+#     now = dt.datetime.utcnow()
+#     now = now - dt.timedelta(days=1) 
+#     url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
+#     runs = list_available_runs(url)
 
     
-if len(runs)==1:
-    #now = dt.datetime.utcnow()-timedelta(1)
-    url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
-    runs = list_available_runs(url)
-    #- Define the run to be used
-    now = now.replace(hour=runs[-1],minute=0,second=0,microsecond=0)
-else:
-    runs=sorted(runs)
-    now = now.replace(hour=runs[len(runs)-2],minute=0,second=0,microsecond=0)
+# if len(runs)==1:
+#     now = dt.datetime.utcnow()-timedelta(1)
+#     url = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.' + now.strftime("%Y") + now.strftime("%m") + now.strftime("%d")
+#     runs = list_available_runs(url)
+#     #- Define the run to be used
+#     now = now.replace(hour=runs[-1],minute=0,second=0,microsecond=0)
+# else:
+#     runs=sorted(runs)
+#     now = now.replace(hour=runs[len(runs)-2],minute=0,second=0,microsecond=0)
+
 
 
 # delete previous runs older than 14 days
